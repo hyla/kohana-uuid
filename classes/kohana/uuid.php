@@ -1,15 +1,14 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
  * The following class generates valid [RFC 4211][ref-rfc-4211] compliant
- * Universally Unique IDentifiers (UUID) version 3, 4 and 5.
- *
- * UUIDs generated validates using OSSP UUID Tool, and output for named-based
- * UUIDs are exactly the same. This is a pure PHP implementation.
+ * Universally Unique IDentifiers (UUID) version 3, 4 and 5. UUIDs generated
+ * validate using OSSP UUID Tool, and output for named-based UUIDs are exactly
+ * the same. This is a pure PHP implementation.
  *
  * Adapted from code published by [Andrew Moore][ref-php-94959].
  *
- * :[ref-rfc-4211](http://www.ietf.org/rfc/rfc4211.txt)
- * :[ref-php-94959](http://www.php.net/manual/en/function.uniqid.php#94959)
+ * [ref-rfc-4211]: http://www.ietf.org/rfc/rfc4211.txt
+ * [ref-php-94959]: http://www.php.net/manual/en/function.uniqid.php#94959
  *
  * @package    Kohana
  * @category   Security
