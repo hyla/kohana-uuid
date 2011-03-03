@@ -20,6 +20,11 @@
 class Kohana_UUID {
 
 	/**
+	 * @var  string  NULL UUID string
+	 */
+	const NULL = '00000000-0000-0000-0000-000000000000';
+
+	/**
 	 * Checks if a UUID has a valid format.
 	 *
 	 * @param   string  UUID
