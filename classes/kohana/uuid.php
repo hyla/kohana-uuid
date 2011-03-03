@@ -36,6 +36,60 @@ class Kohana_UUID {
 	}
 
 	/**
+	 * Convert a string UUID to binary format.
+	 *
+	 * @param   string  uuid
+	 * @return  string
+	 */
+	public static function bin($uuid)
+	{
+		if ( ! UUID::valid($uuid))
+		{
+			return FALSE;
+		}
+
+		// Get hexadecimal components of uuid
+		$hex = str_replace(array('-','{','}'), '', $uuid);
+
+		// Binary Value
+		$bin = '';
+
+		for ($i = 0, $max = strlen($hex); $i < $max; $i += 2)
+		{
+			// Convert each character to a bit
+			$bin .= chr(hexdec($hex[$i].$hex[$i + 1]));
+		}
+
+		return $bin;
+	}
+
+	/**
+	 * Convert a binary UUID to string format.
+	 *
+	 * @param   string  uuid
+	 * @return  string
+	 */
+	public static function str($uuid)
+	{
+		// String value
+		$str = '';
+
+		for ($i = 0, $max = strlen($uuid); $i < $max; $i++)
+		{
+			if ($i >= 4 AND $i <= 10 AND ($i % 2) === 0)
+			{
+				// Add dash at proper offsets
+				$str .= '-';
+			}
+
+			// Convert each bit to an uppercase character
+			$str .= sprintf('%02X', ord($uuid[$i]));
+		}
+
+		return $str;
+	}
+
+	/**
 	 * Version 3 UUIDs are named based. They require a namespace (another
 	 * valid UUID) and a value (the name). Given the same namespace and
 	 * name, the output is always the same.
@@ -52,17 +106,8 @@ class Kohana_UUID {
 			return FALSE;
 		}
 
-		// Get hexadecimal components of namespace
-		$nhex = str_replace(array('-','{','}'), '', $namespace);
-
-		// Binary Value
-		$nstr = '';
-
-		// Convert Namespace UUID to bits
-		for ($i = 0, $max = strlen($nhex); $i < $max; $i += 2)
-		{
-			$nstr .= chr(hexdec($nhex[$i].$nhex[$i + 1]));
-		}
+		// Get namespace in binary format
+		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
 		$hash = strtoupper(md5($nstr.$name));
@@ -133,17 +178,8 @@ class Kohana_UUID {
 			return FALSE;
 		}
 
-		// Get hexadecimal components of namespace
-		$nhex = str_replace(array('-','{','}'), '', $namespace);
-
-		// Binary Value
-		$nstr = '';
-
-		// Convert Namespace UUID to bits
-		for ($i = 0, $max = strlen($nhex); $i < $max; $i += 2)
-		{
-			$nstr .= chr(hexdec($nhex[$i].$nhex[$i + 1]));
-		}
+		// Get namespace in binary format
+		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
 		$hash = strtoupper(sha1($nstr.$name));
