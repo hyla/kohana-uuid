@@ -20,6 +20,11 @@
 class Kohana_UUID {
 
 	/**
+	 * @var  string  NULL UUID string
+	 */
+	const NULL = '00000000-0000-0000-0000-000000000000';
+
+	/**
 	 * Checks if a UUID has a valid format.
 	 *
 	 * @param   string  UUID
@@ -28,6 +33,60 @@ class Kohana_UUID {
 	public static function valid($uuid)
 	{
 		return (preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $uuid) === 1);
+	}
+
+	/**
+	 * Convert a string UUID to binary format.
+	 *
+	 * @param   string  uuid
+	 * @return  string
+	 */
+	public static function bin($uuid)
+	{
+		if ( ! UUID::valid($uuid))
+		{
+			return FALSE;
+		}
+
+		// Get hexadecimal components of uuid
+		$hex = str_replace(array('-','{','}'), '', $uuid);
+
+		// Binary Value
+		$bin = '';
+
+		for ($i = 0, $max = strlen($hex); $i < $max; $i += 2)
+		{
+			// Convert each character to a bit
+			$bin .= chr(hexdec($hex[$i].$hex[$i + 1]));
+		}
+
+		return $bin;
+	}
+
+	/**
+	 * Convert a binary UUID to string format.
+	 *
+	 * @param   string  uuid
+	 * @return  string
+	 */
+	public static function str($uuid)
+	{
+		// String value
+		$str = '';
+
+		for ($i = 0, $max = strlen($uuid); $i < $max; $i++)
+		{
+			if ($i >= 4 AND $i <= 10 AND ($i % 2) === 0)
+			{
+				// Add dash at proper offsets
+				$str .= '-';
+			}
+
+			// Convert each bit to an uppercase character
+			$str .= sprintf('%02X', ord($uuid[$i]));
+		}
+
+		return $str;
 	}
 
 	/**
@@ -47,22 +106,13 @@ class Kohana_UUID {
 			return FALSE;
 		}
 
-		// Get hexadecimal components of namespace
-		$nhex = str_replace(array('-','{','}'), '', $namespace);
-
-		// Binary Value
-		$nstr = '';
-
-		// Convert Namespace UUID to bits
-		for ($i = 0, $max = strlen($nhex); $i < $max; $i += 2)
-		{
-			$nstr .= chr(hexdec($nhex[$i].$nhex[$i + 1]));
-		}
+		// Get namespace in binary format
+		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
-		$hash = md5($nstr.$name);
+		$hash = strtoupper(md5($nstr.$name));
 
-		return sprintf('%08s-%04s-%04x-%04x-%12s',
+		return sprintf('%08s-%04s-%04X-%04X-%12s',
 			// 32 bits for "time_low"
 			substr($hash, 0, 8),
 
@@ -90,7 +140,7 @@ class Kohana_UUID {
 	 */
 	public static function v4()
 	{
-		return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+		return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
 			// 32 bits for "time_low"
 			mt_rand(0, 0xffff), mt_rand(0, 0xffff),
 
@@ -128,22 +178,13 @@ class Kohana_UUID {
 			return FALSE;
 		}
 
-		// Get hexadecimal components of namespace
-		$nhex = str_replace(array('-','{','}'), '', $namespace);
-
-		// Binary Value
-		$nstr = '';
-
-		// Convert Namespace UUID to bits
-		for ($i = 0, $max = strlen($nhex); $i < $max; $i += 2)
-		{
-			$nstr .= chr(hexdec($nhex[$i].$nhex[$i + 1]));
-		}
+		// Get namespace in binary format
+		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
-		$hash = sha1($nstr.$name);
+		$hash = strtoupper(sha1($nstr.$name));
 
-		return sprintf('%08s-%04s-%04x-%04x-%12s',
+		return sprintf('%08s-%04s-%04X-%04X-%12s',
 			// 32 bits for "time_low"
 			substr($hash, 0, 8),
 
