@@ -20,6 +20,26 @@
 class Kohana_UUID {
 
 	/**
+	 * @var  string  DNS namespace
+	 */
+	const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
+	 * @var  string  URL namespace
+	 */
+	const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
+	 * @var  string  ISO object identifier namespace
+	 */
+	const OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
+	 * @var  string  X.500 namespace
+	 */
+	const X500 = '6ba7b814-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
 	 * @var  string  NULL UUID string
 	 */
 	const NIL = '00000000-0000-0000-0000-000000000000';
