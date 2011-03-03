@@ -25,7 +25,7 @@ class Kohana_UUID {
 	 * @param   string  UUID
 	 * @return  boolean
 	 */
-	public static function is_valid($uuid)
+	public static function valid($uuid)
 	{
 		return (preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $uuid) === 1);
 	}
