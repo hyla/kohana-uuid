@@ -106,17 +106,8 @@ class Kohana_UUID {
 			return FALSE;
 		}
 
-		// Get hexadecimal components of namespace
-		$nhex = str_replace(array('-','{','}'), '', $namespace);
-
-		// Binary Value
-		$nstr = '';
-
-		// Convert Namespace UUID to bits
-		for ($i = 0, $max = strlen($nhex); $i < $max; $i += 2)
-		{
-			$nstr .= chr(hexdec($nhex[$i].$nhex[$i + 1]));
-		}
+		// Get namespace in binary format
+		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
 		$hash = strtoupper(md5($nstr.$name));
@@ -187,17 +178,8 @@ class Kohana_UUID {
 			return FALSE;
 		}
 
-		// Get hexadecimal components of namespace
-		$nhex = str_replace(array('-','{','}'), '', $namespace);
-
-		// Binary Value
-		$nstr = '';
-
-		// Convert Namespace UUID to bits
-		for ($i = 0, $max = strlen($nhex); $i < $max; $i += 2)
-		{
-			$nstr .= chr(hexdec($nhex[$i].$nhex[$i + 1]));
-		}
+		// Get namespace in binary format
+		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
 		$hash = strtoupper(sha1($nstr.$name));
