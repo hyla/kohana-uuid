@@ -20,9 +20,29 @@
 class Kohana_UUID {
 
 	/**
+	 * @var  string  DNS namespace
+	 */
+	const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
+	 * @var  string  URL namespace
+	 */
+	const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
+	 * @var  string  ISO object identifier namespace
+	 */
+	const OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
+	 * @var  string  X.500 namespace
+	 */
+	const X500 = '6ba7b814-9dad-11d1-80b4-00c04fd430c8';
+
+	/**
 	 * @var  string  NULL UUID string
 	 */
-	const NULL = '00000000-0000-0000-0000-000000000000';
+	const NIL = '00000000-0000-0000-0000-000000000000';
 
 	/**
 	 * Checks if a UUID has a valid format.
@@ -83,7 +103,7 @@ class Kohana_UUID {
 			}
 
 			// Convert each bit to an uppercase character
-			$str .= sprintf('%02X', ord($uuid[$i]));
+			$str .= sprintf('%02x', ord($uuid[$i]));
 		}
 
 		return $str;
@@ -110,9 +130,9 @@ class Kohana_UUID {
 		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
-		$hash = strtoupper(md5($nstr.$name));
+		$hash = md5($nstr.$name);
 
-		return sprintf('%08s-%04s-%04X-%04X-%12s',
+		return sprintf('%08s-%04s-%04x-%04x-%12s',
 			// 32 bits for "time_low"
 			substr($hash, 0, 8),
 
@@ -140,7 +160,7 @@ class Kohana_UUID {
 	 */
 	public static function v4()
 	{
-		return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
+		return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 			// 32 bits for "time_low"
 			mt_rand(0, 0xffff), mt_rand(0, 0xffff),
 
@@ -182,9 +202,9 @@ class Kohana_UUID {
 		$nstr = UUID::bin($namespace);
 
 		// Calculate hash value
-		$hash = strtoupper(sha1($nstr.$name));
+		$hash = sha1($nstr.$name);
 
-		return sprintf('%08s-%04s-%04X-%04X-%12s',
+		return sprintf('%08s-%04s-%04x-%04x-%12s',
 			// 32 bits for "time_low"
 			substr($hash, 0, 8),
 
